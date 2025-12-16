@@ -14,8 +14,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate();
-        return view('posts.index', compact('posts'));
+        $perPage = request()->query('perPage', 10);
+        $posts = Post::paginate($perPage)->withQueryString();
+        return view('posts.index', compact('posts', 'perPage'));
     }
 
     /**
@@ -50,7 +51,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -58,7 +59,8 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $post->update($request->validated());
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -66,6 +68,34 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('posts.index');
+    }
+
+    public function deleted()
+    {
+        $perPage = request()->query('perPage', 10);
+        $posts = Post::onlyTrashed()->paginate($perPage)->withQueryString();
+        return view('posts.index', compact('posts', 'perPage'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function restore($post)
+    {
+        $post = Post::onlyTrashed()->where('id', $post)->firstOrFail();
+        $post->restore();
+        return redirect()->route('posts.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function permaDestroy($post)
+    {
+        $post = Post::onlyTrashed()->where('id', $post)->firstOrFail();
+        $post->forceDelete();
+        return redirect()->route('posts.deleted');
     }
 }

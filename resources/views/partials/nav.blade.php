@@ -8,30 +8,28 @@
                 </svg>
             </div>
             <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                @auth
-                    <li><a href="{{ route('secure') }}">Secure</a></li>
-                    <li>
-                        <a>Admin</a>
-                        <ul class="p-2">
-                            <li><a href="{{ route('posts.index') }}">Posts</a></li>
-                            <li><a>Submenu 2</a></li>
-                        </ul>
-                    </li>
-                @endauth
+                <li><a>Item 1</a></li>
+                <li>
+                    <a>Parent</a>
+                    <ul class="p-2">
+                        <li><a>Submenu 1</a></li>
+                        <li><a>Submenu 2</a></li>
+                    </ul>
+                </li>
                 <li><a>Item 3</a></li>
             </ul>
         </div>
-        <a href="{{ route('home') }}" class="btn btn-ghost text-xl">{{ config('app.name') }}</a>
+        <a href="/" class="btn btn-ghost text-xl">daisyUI</a>
     </div>
     <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1">
+        <ul class="menu menu-horizontal px-1 z-10">
+            <li><a>Item 1</a></li>
             @auth
-                <li><a href="{{ route('secure') }}">Secure</a></li>
                 <li>
                     <details>
                         <summary>Admin</summary>
-                        <ul class="p-2 z-1">
-                            <li><a href="{{ route('posts.index') }}">Posts</a></li>
+                        <ul class="p-2">
+                            <li><a href="{{route('posts.index')}}">Posts</a></li>
                             <li><a>Submenu 2</a></li>
                         </ul>
                     </details>
@@ -43,24 +41,25 @@
     <div class="navbar-end gap-2">
         @auth
             <ul class="menu menu-horizontal px-1">
+
                 <li>
                     <details>
-                        <summary>{{ Auth::user()->name }}</summary>
-                        <ul class="p-2 z-1">
-                            <li><a href="{{ route('profile.edit') }}">Profile</a></li>
+                        <summary>{{ auth()->user()->name }}</summary>
+                        <ul class="p-2">
+                            <li><a href="{{ route('profile.edit') }}">@lang('Profile')</a></li>
                             <li>
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form action="{{route('logout')}}" method="POST">
                                     @csrf
-                                    <button>Logout</button>
+                                    <button>@lang('Logout')</button>
                                 </form>
                             </li>
                         </ul>
                     </details>
                 </li>
-            </ul>
+        </ul>
         @else
-            <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
-            <a href="{{ route('register') }}" class="btn btn-secondary">Register</a>
+            <a href="{{ route('login') }}" class="btn btn-primary">@lang('Login')</a>
+            <a href="{{ route('register') }}" class="btn btn-success">@lang('Register')</a>
         @endauth
     </div>
 </div>

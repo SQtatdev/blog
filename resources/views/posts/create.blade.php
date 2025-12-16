@@ -1,20 +1,24 @@
 @extends('partials.layout')
+@section('title', 'New Post')
 @section('content')
-    <div class="card bg-base-200 w-1/2 mx-auto">
-
+    <div class="card bg-base-300 w-1/2 mx-auto">
         <div class="card-body">
-            <h2 class="card-title">New Post</h2>
-            <form action="{{ route('posts.store') }}" method="POST">
+            <form action="{{route('posts.store')}}" method="POST">
                 @csrf
                 <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Title</legend>
-                    <input name="title" type="text" class="input w-full" placeholder="Title" />
-                    {{-- <p class="label">Optional</p> --}}
+                    <legend class="fieldset-legend">@lang('Title')</legend>
+                    <input type="text" name="title" class="input w-full" value="{{ old('title') }}" placeholder="@lang('Title')"
+                        required autofocus/>
+                    @error('title')
+                        <p class="label">{{ $message }}</p>
+                    @enderror
                 </fieldset>
-                <fieldset class="fieldset">
-                    <legend class="fieldset-legend">Your bio</legend>
-                    <textarea name="body" class="textarea h-48 w-full" placeholder="Bio"></textarea>
-                    {{-- <div class="label">Optional</div> --}}
+                 <fieldset class="fieldset">
+                    <legend class="fieldset-legend">@lang('Content')</legend>
+                    <textarea type="text" name="body" class="textarea w-full" rows="12" placeholder="@lang('Content')">{{ old('body') }}</textarea>
+                    @error('body')
+                        <p class="label">{{ $message }}</p>
+                    @enderror
                 </fieldset>
                 <button class="btn btn-primary">Create</button>
             </form>
